@@ -109,7 +109,7 @@ public class ProblemService : IProblemService
             .Include(p => p.Answers)
             .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
 
-        if (problem == null)
+        if (problem is null)
         {
             throw new KeyNotFoundException("Problem not found.");
         }
@@ -168,10 +168,6 @@ public class ProblemService : IProblemService
         }
 
 
-        _context.ChangeTracker.DetectChanges();
-        Console.WriteLine(_context.ChangeTracker.DebugView.LongView);
-
-        
         await _context.SaveChangesAsync();
 
 

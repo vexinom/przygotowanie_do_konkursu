@@ -6,7 +6,7 @@ public interface IContestService
 {
     Task<IEnumerable<ContestDto>> GetAll();
 
-    Task<ContestDto> GetById(Guid id);
+    Task<ContestDto?> GetById(Guid id);
 
     Task<ContestDto> Create(CreateContestDto dto);
 

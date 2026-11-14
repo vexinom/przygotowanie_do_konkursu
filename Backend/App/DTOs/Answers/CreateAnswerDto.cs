@@ -1,7 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Backend.DTOs;
 public class CreateAnswerDto
 {
-    // public required Guid ProblemId { get; set; }
+    [Required]
     public required string Content { get; set; }
+    
     public required bool IsCorrect { get; set; }
 }

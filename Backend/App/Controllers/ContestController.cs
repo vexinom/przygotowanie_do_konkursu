@@ -1,6 +1,7 @@
 using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Backend.DTOs;
+using Backend.Models;
 
 namespace Backend.Controllers;
 
@@ -21,7 +22,14 @@ public class ContestController : ControllerBase
 
     [HttpGet("{id}")]
     public async Task<ActionResult<ContestDto>> GetById(Guid id)
-        => Ok(await _service.GetById(id));
+    {
+        var contest = await _service.GetById(id);
+
+        if (contest is null)
+            return NotFound();
+
+        return Ok(contest);
+    }
 
     [HttpPost]
     public async Task<ActionResult<ContestDto>> Create(CreateContestDto dto)
