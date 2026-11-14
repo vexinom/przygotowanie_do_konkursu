@@ -17,7 +17,14 @@ Autorstwa:
 2. Docker i Docker Compose - do bazy danych testowej
 
 ## Jak uruchomić:
-1. Baza danych stawiana jest lokalnie, wystarczy ją odpalić `docker compose up -d` w katalogu repozytorium. Login do bazy np. przez GUI pg-admin4 jest w `.env`
+1. Baza danych stawiana jest lokalnie, wystarczy ją odpalić `docker compose up -d` w katalogu repozytorium. Login do bazy należy dodać do pliku `.env` w katalogu repozytorium o zawartości:
+```
+POSTGRES_DB=konkursy
+POSTGRES_USER=konkursy_admin
+POSTGRES_PASSWORD=admin1234
+```
+(rzecz jasna nazwy, hasła itp można sobie zmieniać, to jest jedynie lokalne)
+
 2. Start backendu: 
 ```
 cd Backend/App
