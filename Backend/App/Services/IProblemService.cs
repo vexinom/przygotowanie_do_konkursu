@@ -6,7 +6,7 @@ public interface IProblemService
 {
     Task<IEnumerable<ProblemDto>> GetAll();
 
-    Task<ProblemDto> GetById(Guid id);
+    Task<ProblemDto?> GetById(Guid id);
 
     Task<ProblemDto> Create(CreateProblemDto dto);
 

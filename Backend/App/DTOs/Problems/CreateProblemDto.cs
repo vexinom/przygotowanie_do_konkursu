@@ -7,5 +7,5 @@ public class CreateProblemDto
     // te warunki jeszcze do dodania!
     // [MinLength(2, ErrorMessage = "At least two answers must be added.")]
     public required List<CreateAnswerDto> Answers { get; set; }
-    public required List<Guid> CategoryIds { get; set; } 
+    public Guid? ContestId { get; set; } 
 }

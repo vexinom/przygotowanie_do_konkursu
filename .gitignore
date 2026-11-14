@@ -482,6 +482,4 @@ $RECYCLE.BIN/
 *.swp
 
 
-#Data base
-.env
-compose.yml
+test.ipynb

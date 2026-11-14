@@ -6,5 +6,8 @@ public class Answer
     public bool IsDeleted { get; set; } = false;
     public bool IsCorrect { get; set; } = false;
     public string Content { get; set;} = string.Empty;
-    public Guid ProblemId { get; set; } = Guid.Empty;
+
+
+    public Guid ProblemId { get; set; } 
+    public Problem Problem { get; set; } = null!; //klucz nawigacyjny
 }

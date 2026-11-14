@@ -3,23 +3,23 @@ using Backend.Models;
 
 namespace Backend.Services;
 
-public class CategoryService : ICategoryService
+public class ContestService : IContestService
 {
-    public Task<IEnumerable<CategoryDto>> GetAll()
+    public Task<IEnumerable<ContestDto>> GetAll()
     {
         throw new NotImplementedException();
     } 
 
-    public Task<CategoryDto> GetById(Guid id)
+    public Task<ContestDto> GetById(Guid id)
     {
         throw new NotImplementedException();
     } 
 
-    public Task<CategoryDto> Create(CreateCategoryDto dto)
+    public Task<ContestDto> Create(CreateContestDto dto)
     {
         throw new NotImplementedException();
     } 
-    public Task<CategoryDto> Update(Guid id, UpdateCategoryDto dto)
+    public Task<ContestDto> Update(Guid id, UpdateContestDto dto)
     {
         throw new NotImplementedException();
     } 

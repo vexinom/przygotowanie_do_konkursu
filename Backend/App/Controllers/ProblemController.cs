@@ -8,7 +8,6 @@ namespace Backend.Controllers;
 [Route("api/[controller]")]
 public class ProblemController : ControllerBase
 {
-
     private readonly IProblemService _service;
 
     public ProblemController(IProblemService service)
@@ -17,33 +16,33 @@ public class ProblemController : ControllerBase
     }
 
 
-    [HttpGet] //pobranie listy zadań
-    public async Task<ActionResult<ProblemDto>> GetAll() //task, bo zwrot asynchroniczny!
+    [HttpGet] 
+    public async Task<ActionResult<List<ProblemDto>>> GetAll() 
         => Ok(await _service.GetAll());
-
-    [HttpGet("{id}")] //pobranie jednego zadania
+            
+    [HttpGet("{id}")]
     public async Task<ActionResult<ProblemDto>> GetById(Guid id)
     {
-        throw new NotImplementedException();
+        var problem = await _service.GetById(id);
+
+        if (problem is null)
+            return NotFound();
+
+        return Ok(problem);
     }
 
     [HttpPost]
-    public async Task<ActionResult> Create()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<ActionResult<ProblemDto>> Create(CreateProblemDto dto)
+        => Ok(await _service.Create(dto));
 
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<ActionResult<ProblemDto>> Update(Guid id, UpdateProblemDto dto)
+        => Ok(await _service.Update(id, dto));
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult> Delete()
+    public async Task<ActionResult> Delete(Guid id)
     {
-        throw new NotImplementedException();
+        await _service.Delete(id);
+        return NoContent();
     }
-
-
 }

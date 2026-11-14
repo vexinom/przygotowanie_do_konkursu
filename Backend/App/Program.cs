@@ -1,11 +1,19 @@
 using Scalar.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using Backend.Data;
+using Backend.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
+
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+builder.Services.AddScoped<IContestService, ContestService>();
+builder.Services.AddScoped<IProblemService, ProblemService>();
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -18,9 +26,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
+
