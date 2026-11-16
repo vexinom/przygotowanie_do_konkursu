@@ -15,6 +15,7 @@ Autorstwa:
 
 ## Co zainstalować:
 1. **.NET 10 SDK** - na fedorze można przy pomocy: `sudo dnf install dotnet-sdk-10.0` (ale wierzę, że znajdziecie jak to zrobić u siebie;) )
+Mint / Ubuntu pewnie też `udo apt install dotnet-sdk-10.0`
 2. **Docker i Docker Compose** - do bazy danych testowej
 
 ## Jak uruchomić:
