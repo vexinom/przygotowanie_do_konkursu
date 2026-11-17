@@ -12,5 +12,5 @@ public class AppDbContext : DbContext
     public DbSet<Problem> Problems { get; set; } = default!;
     public DbSet<Answer> Answers { get; set; } = default!;
     public DbSet<Contest> Contests { get; set; } = default!;
-
+    public DbSet<HistoryEntry> History { get; set; } = default!;
 }
