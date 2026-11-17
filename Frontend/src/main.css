@@ -1,1 +1,10 @@
 @import "tailwindcss";
+
+@theme {
+    --color-nav: #8600d9;
+    --color-button: #4c004f;
+    --color-button-hover: #310033;
+
+    --color-nav-button-hover: #6600a6;
+
+}
