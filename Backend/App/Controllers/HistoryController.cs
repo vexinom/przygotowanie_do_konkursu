@@ -2,6 +2,7 @@ using Backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Backend.DTOs;
 using Backend.Models;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Backend.Controllers;
 
@@ -31,12 +32,20 @@ public class HistoryController : ControllerBase
         return Ok(contest);
     }
     [HttpGet("{from_date}/{to_date}")]
-    public async Task<ActionResult<HistoryDto>> GetById(DateTime from_date, DateTime to_date)
+    public async Task<ActionResult<HistoryDto>> FilterList(DateTime from_date, DateTime to_date, [FromQuery] List<SolveState>? states)
     {
         var contest = await _service.GetAll();
 
         if (contest is null)
             return NotFound();
+
+        if (states != null && states.Any())
+        {
+            return Ok(contest.Where(c => c.LastInteractionTime > from_date && c.LastInteractionTime < to_date && states.Contains(c.State))
+                .ToList());
+
+        }
+
         return Ok(contest.Where(c => c.LastInteractionTime > from_date && c.LastInteractionTime < to_date)
             .ToList());
     }
