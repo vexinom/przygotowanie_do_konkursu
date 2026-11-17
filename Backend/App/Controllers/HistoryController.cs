@@ -30,17 +30,15 @@ public class HistoryController : ControllerBase
 
         return Ok(contest);
     }
-    [HttpGet("{id}-{from_date}-{to_date}")]
-    public async Task<ActionResult<HistoryDto>> GetById(Guid id, DateTime from_date, DateTime to_date)
+    [HttpGet("{from_date}/{to_date}")]
+    public async Task<ActionResult<HistoryDto>> GetById(DateTime from_date, DateTime to_date)
     {
         var contest = await _service.GetAll();
 
         if (contest is null)
             return NotFound();
-        contest.Where(c => c.LastInteractionTime > from_date && c.LastInteractionTime < to_date)
-            .ToList();
-
-        return Ok(contest);
+        return Ok(contest.Where(c => c.LastInteractionTime > from_date && c.LastInteractionTime < to_date)
+            .ToList());
     }
 
 

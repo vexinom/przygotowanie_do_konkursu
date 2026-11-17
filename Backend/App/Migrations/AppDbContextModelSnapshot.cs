@@ -69,6 +69,31 @@ namespace Backend.Migrations
                     b.ToTable("Contests");
                 });
 
+            modelBuilder.Entity("Backend.Models.HistoryEntry", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastInteractionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ProblemId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProblemId");
+
+                    b.ToTable("History");
+                });
+
             modelBuilder.Entity("Backend.Models.Problem", b =>
                 {
                     b.Property<Guid>("Id")
@@ -96,6 +121,17 @@ namespace Backend.Migrations
                 {
                     b.HasOne("Backend.Models.Problem", "Problem")
                         .WithMany("Answers")
+                        .HasForeignKey("ProblemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Problem");
+                });
+
+            modelBuilder.Entity("Backend.Models.HistoryEntry", b =>
+                {
+                    b.HasOne("Backend.Models.Problem", "Problem")
+                        .WithMany()
                         .HasForeignKey("ProblemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
