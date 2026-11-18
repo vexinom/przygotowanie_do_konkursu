@@ -1,6 +1,6 @@
 export default function Navbar() {
   return (
-    <nav className="flex items-center justify-between bg-nav px-8 py-4 text-white">
+    <nav className="flex items-center justify-between bg-nav px-8 py-4 text-white font-semibold">
       <div className="text-xl font-bold">
         MathScroll
       </div>
@@ -25,7 +25,7 @@ export default function Navbar() {
 
       <div className = "flex items-center gap-3">
         <button className="rounded bg-button px-4 py-2 hover:bg-button-hover">
-          YY
+          <i className = "icon-moon"></i>
         </button>
 
         <button className="rounded bg-button px-4 py-2 hover:bg-button-hover">

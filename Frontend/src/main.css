@@ -1,4 +1,6 @@
+@import "./assets/fontello/css/moon.css";
 @import "tailwindcss";
+
 
 @theme {
     --color-nav: #8600d9;
@@ -6,5 +8,7 @@
     --color-button-hover: #310033;
 
     --color-nav-button-hover: #6600a6;
+
+    --color-side-nav: #04b2de;
 
 }
