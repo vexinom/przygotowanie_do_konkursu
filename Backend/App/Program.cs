@@ -77,9 +77,11 @@ using (var scope = app.Services.CreateScope())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors();
 
 
 app.MapControllers();

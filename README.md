@@ -15,6 +15,9 @@ Autorstwa:
 * dodano schemat frontendu
 * skonfigurowano łączenie aplikacji frontendu z API
 
+* dodano opcję logowania użytkowników po stronie backendu
+
+
 
 ## Co zainstalować:
 1. **.NET 10 SDK** 
@@ -68,9 +71,11 @@ Przy każdej kolejnej aktualizacji, by włączyć backend wystarczy:
 ``` bash
 cd Backend/App
 dotnet restore
-dotnet run
+dotnet dotnet run --launch-profile https
 ```
-Po uruchomieniu serwer będzie dostępny pod adresem: `http://localhost:5162` (można połączyć się przez UI Scalar dodając na końcu: `/scalar`)
+Po uruchomieniu serwer będzie dostępny pod adresem: `https://localhost:7147` lub `http://localhost:5162` (można połączyć się przez UI Scalar dodając na końcu: `/scalar`). 
+
+***Uwaga!*** - aby przesyłanie ciasteczek działało poprawnie wymagane jest użycie połącznie **https**! 
 
 
 3. Aby odpalić frontend:
