@@ -3,28 +3,36 @@ using Microsoft.EntityFrameworkCore;
 using Backend.Data;
 using Backend.Services;
 using Microsoft.AspNetCore.Identity;
+using MailKit.Security;
+using FluentEmail.MailKitSmtp;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+//pobranie connectionStringa z dotnet User Secrets 
 string connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connectionString));
 
-
+//dodawnie kontrolerów i serwisów
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IContestService, ContestService>();
 builder.Services.AddScoped<IProblemService, ProblemService>();
 builder.Services.AddScoped<IHistoryService, HistoryService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddOpenApi();
 
-// Dodanie obsługi ról
+// Dodanie obsługi ról użytkowników
 builder.Services
      .AddIdentity<AppUser, IdentityRole<Guid>>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
+
+//ustawienia haseł do logowania użytkowników
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.User.RequireUniqueEmail = true;
@@ -39,6 +47,30 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
 });
 
+//ustawienia wysyłania emaili
+builder.Services
+    .AddFluentEmail(
+        builder.Configuration["Email:SenderEmail"]!,
+        builder.Configuration["Email:SenderName"]
+    )
+    .AddMailKitSender(new SmtpClientOptions
+    {
+        Server = builder.Configuration["Email:Host"]!,
+        Port = builder.Configuration.GetValue<int>("Email:Port"),
+        User = builder.Configuration["Email:Username"],
+        Password = builder.Configuration["Email:Password"],
+        RequiresAuthentication = true,
+        SocketOptions = SecureSocketOptions.StartTls
+    });
+
+// ustawienia bezpieczeńśtwa tokenów
+builder.Services.Configure<DataProtectionTokenProviderOptions>( 
+    options =>
+    {
+        options.TokenLifespan = TimeSpan.FromHours(1); //czas ważności tokenu do resetu hasła
+    });
+
+// ustawienia ciasteczek aplikacji
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.Cookie.HttpOnly = true;
@@ -49,8 +81,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
-
-
+// ustawienia CORS
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -62,6 +93,9 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+// ===============================================================================================
+// budowa aplikacji
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -73,7 +107,7 @@ if (app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
-    await IdentitySeeder.SeedRolesAsync(scope.ServiceProvider);
+    await IdentitySeeder.SeedAsync(scope.ServiceProvider);
 }
 
 app.UseHttpsRedirection();

@@ -67,4 +67,41 @@ public class AuthController : ControllerBase
 
         return Ok(result);
     }
+
+    [Authorize]
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword(ChangePasswordDto dto)
+    {
+        var result = await _service.ChangePassword(User, dto);
+
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        return Ok();
+    }
+
+
+    [AllowAnonymous]
+    [HttpPost("forgot-password")] //zlecenie resetu hasła
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordDto dto)
+    {
+        await _service.ForgotPassword(dto);
+
+        return Ok(new
+        {
+            message = "Link do resetu hasła wysłany na podany email"
+        });
+    }
+
+    [AllowAnonymous]
+    [HttpPost("reset-password")] // faktyczne resetowanie hasła
+    public async Task<IActionResult> ResetPassword(ResetPasswordDto dto)
+    {
+        var result = await _service.ResetPassword(dto);
+
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        return Ok();
+    }
 }

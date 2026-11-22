@@ -12,5 +12,11 @@ public interface IAuthService
 
     Task Logout();
 
-    Task<UserDto?> GetCurrentUser(ClaimsPrincipal User);
+    Task<UserDto?> GetCurrentUser(ClaimsPrincipal principal);
+
+    Task<IdentityResult> ChangePassword(ClaimsPrincipal principal, ChangePasswordDto dto);
+
+    Task ForgotPassword(ForgotPasswordDto dto);
+
+    Task<IdentityResult> ResetPassword(ResetPasswordDto dto);
 }
