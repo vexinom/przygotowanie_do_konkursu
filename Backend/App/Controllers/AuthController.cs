@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Backend.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Backend.Services;
+using FluentEmail.Core;
 
 namespace Backend.Controllers;
 
@@ -102,6 +103,25 @@ public class AuthController : ControllerBase
         if (!result.Succeeded)
             return BadRequest(result.Errors);
 
+        return Ok();
+    }
+
+    [AllowAnonymous]
+    [HttpPost("confirm-email")]
+    public async Task<IActionResult> ConfirmEmail(ConfirmEmailDto dto)
+    {
+        var result = await _service.ConfirmEmail(dto);
+        if (!result.Succeeded)
+            return BadRequest(result.Errors);
+
+        return Ok();
+    }
+
+    [Authorize]
+    [HttpPost("request-email-confirmation")]
+    public async Task<IActionResult> RequestEmailConfirmation()
+    {
+        await _service.ResendConfirmationEmail(User);
         return Ok();
     }
 }

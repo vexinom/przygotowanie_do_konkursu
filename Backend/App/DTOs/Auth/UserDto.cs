@@ -5,4 +5,5 @@ public class UserDto
     public required string UserName { get; set; }
     public required string Email { get; set; }
     public List<string> Roles { get; set; } = new();
+    public required bool EmalConfirmed { get; set; }
 }

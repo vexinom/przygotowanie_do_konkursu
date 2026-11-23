@@ -16,7 +16,7 @@ Autorstwa:
 * skonfigurowano łączenie aplikacji frontendu z API
 
 * dodano opcję logowania użytkowników po stronie backendu
-* **dodano możliwość zmiany i resetu hasła przez email** 
+* **dodano możliwość zmiany i resetu hasła przez email** oraz potwierdzanie adresu email
 
 
 ## Co zainstalować:

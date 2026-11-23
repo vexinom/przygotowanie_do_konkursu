@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Backend.Data;
 using System.Text;
 using Microsoft.AspNetCore.WebUtilities;
+using Org.BouncyCastle.Crypto;
 
 namespace Backend.Services;
 
@@ -31,14 +32,16 @@ public class AuthService : IAuthService
 
     public async Task<IdentityResult> Register(RegisterDto dto)
     {
-        await using var transaction =
-            await _context.Database.BeginTransactionAsync();
+        
 
         var user = new AppUser
         {
             UserName = dto.UserName,
             Email = dto.Email
         };
+
+        await using var transaction =
+            await _context.Database.BeginTransactionAsync();
 
         var createResult = await _userManager.CreateAsync(user, dto.Password);
 
@@ -51,7 +54,9 @@ public class AuthService : IAuthService
             return roleResult;
 
         await transaction.CommitAsync();
-
+        
+        await SendConfirmationEmail(user);
+        
         return IdentityResult.Success;
     }
 
@@ -91,7 +96,8 @@ public class AuthService : IAuthService
             Id = user.Id,
             Email = user.Email!,
             UserName = user.UserName!,
-            Roles = roles.ToList()
+            Roles = roles.ToList(),
+            EmalConfirmed = user.EmailConfirmed
         };
     }
 
@@ -117,9 +123,8 @@ public class AuthService : IAuthService
         if (user is null)
             throw new UnauthorizedAccessException();
 
-        // TODO: na razie nie ma potwierdzanai maila przy loginie - trzeba dodać
-        // if (!await _userManager.IsEmailConfirmedAsync(user))
-        //     return;
+        if (!await _userManager.IsEmailConfirmedAsync(user))
+            return;
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         if (string.IsNullOrEmpty(token))
@@ -151,12 +156,76 @@ public class AuthService : IAuthService
         if (user is null)
             return IdentityResult.Failed();
 
-        var token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(dto.Token));
+        string token;
+        try
+        {
+            token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(dto.Token));
+        }
+        catch (FormatException)
+        {
+            return IdentityResult.Failed();
+        }
+
 
         return await _userManager.ResetPasswordAsync(
             user,
             token,
             dto.NewPassword
+        );
+    }
+
+    public async Task SendConfirmationEmail(AppUser user)
+    {
+        if (user.EmailConfirmed)
+            return;
+
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+        var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
+        var frontendUrl = _configuration["Frontend:BaseUrl"];
+
+            var confirmEmailLink = QueryHelpers.AddQueryString(
+                $"{frontendUrl}/confirm-email",
+                new Dictionary<string, string?>
+                {
+                    ["email"] = user.Email,
+                    ["token"] = encodedToken
+                }
+            );
+
+        await _emailService.SendConfirmationEmail(user.Email!, confirmEmailLink);
+    }
+
+    public async Task ResendConfirmationEmail(ClaimsPrincipal principal)
+    {
+        var user = await _userManager.GetUserAsync(principal);
+        if (user is null)
+            throw new UnauthorizedAccessException();
+        
+        await SendConfirmationEmail(user);
+    }
+
+
+    public async Task<IdentityResult> ConfirmEmail(ConfirmEmailDto dto)
+    {
+        var user = await _userManager.FindByEmailAsync(dto.Email);
+
+        if (user is null)
+            return IdentityResult.Failed();
+
+        string token;
+        try
+        {
+            token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(dto.Token));
+        }
+        catch (FormatException)
+        {
+            return IdentityResult.Failed();
+        }
+
+        return await _userManager.ConfirmEmailAsync(
+            user,
+            token
         );
     }
 }

@@ -32,4 +32,26 @@ public class EmailService : IEmailService
             );
         }
     }
+
+    public async Task SendConfirmationEmail(string email, string confirmEmailLink)
+    {
+        var response = await _email
+            .To(email)
+            .Subject("Reset hasła")
+            .Body($"""
+                <h2>Potwierdzenie adresu email</h2>
+                <p>Cieszymy się, że dołączasz do nas</p>
+                <p>Kliknij poniższy link, aby potwierdzić swój email:</p>
+                <a href="{confirmEmailLink}">Potwierdź</a>
+                <p>Jeśli nie zakładałeś konta, zignoruj tę wiadomość.</p>
+                """, isHtml: true)
+            .SendAsync();
+
+        if (!response.Successful)
+        {
+            throw new InvalidOperationException(
+                $"Nie udało się wysłać emaila: {string.Join(", ", response.ErrorMessages)}"
+            );
+        }
+    }
 }

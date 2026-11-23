@@ -14,9 +14,19 @@ public interface IAuthService
 
     Task<UserDto?> GetCurrentUser(ClaimsPrincipal principal);
 
+
+
     Task<IdentityResult> ChangePassword(ClaimsPrincipal principal, ChangePasswordDto dto);
 
     Task ForgotPassword(ForgotPasswordDto dto);
 
     Task<IdentityResult> ResetPassword(ResetPasswordDto dto);
+
+    
+    
+    Task SendConfirmationEmail(AppUser user);
+    
+    Task ResendConfirmationEmail(ClaimsPrincipal principal);
+
+    Task<IdentityResult> ConfirmEmail(ConfirmEmailDto dto);
 }
