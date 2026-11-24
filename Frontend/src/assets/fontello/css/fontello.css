@@ -1,11 +1,11 @@
 @font-face {
-  font-family: 'moon';
-  src: url('../font/moon.eot?8206317');
-  src: url('../font/moon.eot?8206317#iefix') format('embedded-opentype'),
-       url('../font/moon.woff2?8206317') format('woff2'),
-       url('../font/moon.woff?8206317') format('woff'),
-       url('../font/moon.ttf?8206317') format('truetype'),
-       url('../font/moon.svg?8206317#moon') format('svg');
+  font-family: 'fontello';
+  src: url('../font/fontello.eot?13034270');
+  src: url('../font/fontello.eot?13034270#iefix') format('embedded-opentype'),
+       url('../font/fontello.woff2?13034270') format('woff2'),
+       url('../font/fontello.woff?13034270') format('woff'),
+       url('../font/fontello.ttf?13034270') format('truetype'),
+       url('../font/fontello.svg?13034270#fontello') format('svg');
   font-weight: normal;
   font-style: normal;
 }
@@ -14,13 +14,13 @@
 /*
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
-    font-family: 'moon';
-    src: url('../font/moon.svg?8206317#moon') format('svg');
+    font-family: 'fontello';
+    src: url('../font/fontello.svg?13034270#fontello') format('svg');
   }
 }
 */
 [class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "moon";
+  font-family: "fontello";
   font-style: normal;
   font-weight: normal;
   speak: never;
@@ -54,4 +54,5 @@
   /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
 
-.icon-moon:before { content: '\f186'; } /* '' */
+.icon-user:before { content: '\e800'; } /* '' */
+.icon-lock:before { content: '\e801'; } /* '' */

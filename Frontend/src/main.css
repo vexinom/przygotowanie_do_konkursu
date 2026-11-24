@@ -1,14 +1,26 @@
-@import "./assets/fontello/css/moon.css";
+@import "./assets/fontello/css/fontello.css";
 @import "tailwindcss";
 
 
 @theme {
-    --color-nav: #8600d9;
-    --color-button: #4c004f;
-    --color-button-hover: #310033;
+    --color-nav: rgba(0, 0, 0, 0.6);
+    --color-button: #851842;
+    --color-button-hover: #57102b;
 
     --color-nav-button-hover: #6600a6;
 
-    --color-side-nav: #04b2de;
+    --color-side-nav: rgba(0, 0, 0, 0.6);
+    --base-color: #ba4545;
+    --color-main-bg: rgba(0, 0, 0, 0.6);
+    --color-main-border: rgba(255, 255, 255, 0.6);
 
+}
+
+@layer base {
+
+    body{
+        background: linear-gradient(180deg, #1E1E1E 0%, #B56363 100%);
+        min-height: 100vh;
+        background-attachment: fixed;
+    }
 }
