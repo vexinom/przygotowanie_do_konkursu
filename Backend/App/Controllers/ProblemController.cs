@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Backend.DTOs;
 using Backend.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize(Roles = "Admin,Teacher")]
 public class ProblemController : ControllerBase
 {
     private readonly IProblemService _service;

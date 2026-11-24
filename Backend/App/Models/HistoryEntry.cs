@@ -1,21 +1,20 @@
 namespace Backend.Models;
+using Microsoft.EntityFrameworkCore;
 
-public enum SolveState
-{
-    Correct,
-    Wrong,
-    InProgress
-}
-
+[PrimaryKey(nameof(UserId), nameof(ProblemId))]
 public class HistoryEntry
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
-    public bool IsDeleted { get; set; } = false;
-    public SolveState State { get; set; } = SolveState.InProgress;
-    public DateTime LastInteractionTime { get; set; } = DateTime.Now;
+    public bool IsCorrect { get; set; }
+    
+    public DateTime FirstAttemptAt { get; set; } = DateTime.UtcNow; //pierwsze podejście do zadania
+    public DateTime LastAttemptAt { get; set; } = DateTime.UtcNow; //ostatnie podejście do zadania
+    
+    public int AttemptsToSolve {get; set;} = 1; //zlicza próby aż do pierwszej udanej
+    public int TotalAttempts {get; set;} = 1; //zlicza wszystkie podejścia (udane i nieudane)
+    public DateTime? FirstSolvedAt { get; set; }
 
-    // public Guid UserId { get; set; }
-    // public User User { get; set; } = null!; //klucz nawigacyjny
+    public Guid UserId { get; set; }
+    public AppUser User { get; set; } = null!; //klucz nawigacyjny
 
     public Guid ProblemId { get; set; }
     public Problem Problem { get; set; } = null!; //klucz nawigacyjny

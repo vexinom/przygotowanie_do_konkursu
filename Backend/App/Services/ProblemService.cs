@@ -15,23 +15,16 @@ public class ProblemService : IProblemService
         _context = context;
     }
 
-    public async Task<IEnumerable<ProblemDto>> GetAll()
+    public async Task<IEnumerable<ProblemSummaryDto>> GetAll()
     {
         return await _context.Problems
             .Where(p => !p.IsDeleted)
-            .Select(p => new ProblemDto
+            .OrderBy(p => p.Content)
+            .Select(p => new ProblemSummaryDto
             {
                 Id = p.Id,
                 Content = p.Content,
-                Answers = p.Answers
-                    .Where(a => !a.IsDeleted)
-                    .Select(a => new AnswerDto
-                    {
-                        Id = a.Id,
-                        Content = a.Content,
-                        IsCorrect = a.IsCorrect
-                    })
-                    .ToList(),
+                AnswersCount = p.Answers.Count(a => !a.IsDeleted),
                 ContestId = p.ContestId
             })
             .ToListAsync();

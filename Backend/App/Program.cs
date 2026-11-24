@@ -5,6 +5,8 @@ using Backend.Services;
 using Microsoft.AspNetCore.Identity;
 using MailKit.Security;
 using FluentEmail.MailKitSmtp;
+using Backend.Exceptions;
+using Backend.Mapping;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,10 +22,25 @@ builder.Services.AddControllers();
 
 builder.Services.AddScoped<IContestService, ContestService>();
 builder.Services.AddScoped<IProblemService, ProblemService>();
-builder.Services.AddScoped<IHistoryService, HistoryService>();
+builder.Services.AddScoped<IUserProgressService, UserProgressService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddExceptionHandler<AccessExceptionHandler>();
+builder.Services.AddScoped<ISolvingService, SolvingService>();
+builder.Services.AddScoped<IProblemSelector, RandomProblemSelector>(); 
+
+builder.Services.AddProblemDetails(); //do struktury zwracanych błędów https
 builder.Services.AddOpenApi();
+
+
+// dodanie mapowania
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.LicenseKey = builder.Configuration["AutoMapper:LicenseKey"];
+    cfg.AddMaps(typeof(MappingProfile).Assembly);
+});
+
+
 
 // Dodanie obsługi ról użytkowników
 builder.Services
@@ -81,6 +98,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.SlidingExpiration = true;
 });
 
+
 // ustawienia CORS
 builder.Services.AddCors(options =>
 {
@@ -117,7 +135,7 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
-
+app.UseExceptionHandler();
 app.MapControllers();
 
 app.Run();

@@ -136,23 +136,31 @@ namespace Backend.Migrations
 
             modelBuilder.Entity("Backend.Models.HistoryEntry", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime>("LastInteractionTime")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ProblemId")
                         .HasColumnType("uuid");
 
-                    b.Property<int>("State")
+                    b.Property<int>("AttemptsToSolve")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.Property<DateTime>("FirstAttemptAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("FirstSolvedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsCorrect")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("LastAttemptAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("TotalAttempts")
+                        .HasColumnType("integer");
+
+                    b.HasKey("UserId", "ProblemId");
 
                     b.HasIndex("ProblemId");
 
@@ -331,7 +339,15 @@ namespace Backend.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Problem");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Backend.Models.Problem", b =>

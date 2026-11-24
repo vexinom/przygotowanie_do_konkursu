@@ -482,4 +482,6 @@ $RECYCLE.BIN/
 *.swp
 
 
+# Tests
 test.ipynb
+TestRoleChange.cs

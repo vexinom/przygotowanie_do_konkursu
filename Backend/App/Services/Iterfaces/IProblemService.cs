@@ -4,7 +4,7 @@ namespace Backend.Services;
 
 public interface IProblemService
 {
-    Task<IEnumerable<ProblemDto>> GetAll();
+    Task<IEnumerable<ProblemSummaryDto>> GetAll();
 
     Task<ProblemDto?> GetById(Guid id);
 
