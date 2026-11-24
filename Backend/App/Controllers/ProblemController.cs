@@ -24,14 +24,7 @@ public class ProblemController : ControllerBase
             
     [HttpGet("{id}")]
     public async Task<ActionResult<ProblemDto>> GetById(Guid id)
-    {
-        var problem = await _service.GetById(id);
-
-        if (problem is null)
-            return NotFound();
-
-        return Ok(problem);
-    }
+        => Ok(await _service.GetById(id));
 
     [HttpPost]
     public async Task<ActionResult<ProblemDto>> Create(CreateProblemDto dto)

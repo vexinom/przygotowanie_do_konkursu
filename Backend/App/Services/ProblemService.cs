@@ -49,14 +49,15 @@ public class ProblemService : IProblemService
                     .ToList(),
                 ContestId = p.ContestId
             })
-            .FirstOrDefaultAsync();
+            .FirstOrDefaultAsync()
+            ?? throw new KeyNotFoundException("Problem not found.");
             
     }
 
     public async Task<ProblemDto> Create(CreateProblemDto dto)
     {
         //sprawdzenie ilości dodanych odpowiedzi jest w Dto (a przyjanmniej powinno...)
-        //zakładam, że przynajmniej jedna musi być poprawna
+        //przynajmniej jedna musi być poprawna
         if (dto.Answers.Any(a => a.IsCorrect) == false)
         {
             throw new ValidationException("At least one answer must be correct.");

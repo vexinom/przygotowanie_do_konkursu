@@ -1,4 +1,4 @@
-// namespace Backend.Models.Identity;
+namespace Backend.Models;
 
 public static class Roles
 {

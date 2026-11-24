@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Diagnostics;
-using static Backend.Services.UserProgressService;
 
 namespace Backend.Exceptions;
 

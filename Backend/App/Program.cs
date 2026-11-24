@@ -7,6 +7,7 @@ using MailKit.Security;
 using FluentEmail.MailKitSmtp;
 using Backend.Exceptions;
 using Backend.Mapping;
+using Backend.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -125,7 +126,7 @@ if (app.Environment.IsDevelopment())
 
 using (var scope = app.Services.CreateScope())
 {
-    await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+    await DataSeeder.SeedAsync(scope.ServiceProvider);
 }
 
 app.UseHttpsRedirection();

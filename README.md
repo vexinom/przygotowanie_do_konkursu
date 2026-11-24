@@ -17,6 +17,8 @@ Autorstwa:
 
 * dodano opcję logowania użytkowników po stronie backendu
 * **dodano możliwość zmiany i resetu hasła przez email** oraz potwierdzanie adresu email
+* zmieniono model wpisów historii
+* dodano seeder wstawiający przykładowe dane do bazy przy starcie 
 
 
 ## Co zainstalować:
