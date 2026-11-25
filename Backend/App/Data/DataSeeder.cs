@@ -79,6 +79,9 @@ public static class DataSeeder
 
     private static async Task SeedProblemsAsync(AppDbContext context)
     {
+        if (await context.Problems.AnyAsync(p => !p.IsDeleted))
+            return;
+
         var math = await EnsureContestAsync(context,
             "Konkurs matematyczny", "Zadania z arytmetyki, geometrii i analizy.");
         var cs = await EnsureContestAsync(context,
