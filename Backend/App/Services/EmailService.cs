@@ -1,3 +1,4 @@
+using Backend.Exceptions;
 using FluentEmail.Core;
 
 namespace Backend.Services;
@@ -27,7 +28,7 @@ public class EmailService : IEmailService
 
         if (!response.Successful)
         {
-            throw new InvalidOperationException(
+            throw new EmailSendException(
                 $"Nie udało się wysłać emaila: {string.Join(", ", response.ErrorMessages)}"
             );
         }
@@ -37,7 +38,7 @@ public class EmailService : IEmailService
     {
         var response = await _email
             .To(email)
-            .Subject("Reset hasła")
+            .Subject("Potwierdź adres e-mail")
             .Body($"""
                 <h2>Potwierdzenie adresu email</h2>
                 <p>Cieszymy się, że dołączasz do nas</p>
@@ -49,7 +50,7 @@ public class EmailService : IEmailService
 
         if (!response.Successful)
         {
-            throw new InvalidOperationException(
+            throw new EmailSendException(
                 $"Nie udało się wysłać emaila: {string.Join(", ", response.ErrorMessages)}"
             );
         }
