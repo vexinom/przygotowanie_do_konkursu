@@ -19,8 +19,21 @@
 @layer base {
 
     body{
-        background: linear-gradient(180deg, #1E1E1E 0%, #B56363 100%);
+        background: linear-gradient(180deg, #1F0043 0%, #6e1f6b 50%, #B56363 100%);
         min-height: 100vh;
         background-attachment: fixed;
     }
+
+
+    /*This part is necessary for removing yellowish background that browsers enforse after filling in login forms*/
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus
+    input:-webkit-autofill:active
+    input:autofill{
+        -webkit-text-fill-color: #FFFFFF;
+        caret-color: #ffffff;
+        transition: background-color 0s 600000s, color 0s 600000s;
+    }
+
 }

@@ -1,4 +1,6 @@
 import { useState, type FormEvent } from "react";
+import avatarImg from "../assets/avatar_icon.png"
+import treeImg from "../assets/tree.png"
 
 const API_URL = "https://localhost:7147/api/Auth/login";
 
@@ -60,19 +62,31 @@ export default function LoginForm()
     }
 
     return (
-        <div className="flex w-full h-full rounded-2xl bg-main-bg">
+        <div className="flex w-full min-h-full flex-col items-stretch lg:flex-row rounded-2xl bg-main-bg">
 
-            <div className="w-1/2 p-6">
-                <div className="flex h-full w-full flex-col items-center justify-center rounded-2xl border border-main-border p-4 "> 
+            <div className="flex w-full py-3 sm:p-6 lg:w-1/2">
+
+                <div className="flex w-full flex-col items-center justify-center rounded-none sm:rounded-2xl sm:border sm:border-main-border py-3 sm:p-4 "> 
                     
-                    <div className=" w-3/4 h-3/5 justify-center flex flex-col rounded-2xl bg-white/10 border border-white/10">
-                        
-                        <form onSubmit={handleSubmit} className="mt-20 flex flex-col gap-4 ">
+                    <div className="relative w-full sm:w-3/4 mt-14 py-8 flex-col rounded-2xl bg-white/10 border border-white/10">
+                       
+                       <div className="absolute -top-12 left-1/2 h-24 w-24 -translate-x-1/2 overflow-hidden rounded-full border border-white/40 bg-[#2b2727]">
+                            <img
+                                src={avatarImg}
+                                alt=""
+                                className="h-full w-full object-cover"
+                            />
+                       </div>
+
+
+                        {/*Form to log in */}
+                        <form onSubmit={handleSubmit} className="sm:mt-20 mt-14 flex flex-col gap-4 ">
 
                             <div className="flex flex-col items-center gap-1.5 ">
 
-                                <label htmlFor="email" className="w-3/4 text-left text-sm font-bold text-gray-300">Email</label>
-                                <div className="flex h-10 w-3/4 rounded-xl border border-white/40 bg-gradient-to-b from-[#727272]/20 to-[#D8D8D8]/20">
+                                <label htmlFor="email" className="w-full sm:w-3/4 text-left text-sm font-bold text-gray-300">Email</label>
+                                
+                                <div className="flex h-10 w-full sm:w-3/4 rounded-xl border border-white/40 bg-gradient-to-b from-[#727272]/20 to-[#D8D8D8]/20">
 
                                     <div className="flex w-11 shrink-0 items-center justify-center border-r border-white/10 bg-[#9b9b9b] rounded-tl-xl rounded-bl-xl">
                                         <i className="icon-user text-black text-2xl"></i>
@@ -93,9 +107,9 @@ export default function LoginForm()
 
                             <div className="flex flex-col items-center gap-1.5 ">
 
-                                <label htmlFor="username" className="w-3/4 text-left text-sm font-bold text-gray-300">Password</label>
+                                <label htmlFor="password" className="w-full sm:w-3/4 text-left text-sm font-bold text-gray-300">Password</label>
 
-                                <div className="flex h-10 w-3/4 rounded-xl border border-white/40 bg-gradient-to-b from-[#727272]/20 to-[#D8D8D8]/20">
+                                <div className="flex h-10 w-full sm:w-3/4 rounded-xl border border-white/40 bg-gradient-to-b from-[#727272]/20 to-[#D8D8D8]/20">
 
                                     <div className="flex w-11 shrink-0 items-center justify-center border-r border-white/10 bg-[#9b9b9b] rounded-tl-xl rounded-bl-xl">
                                         <i className="icon-lock text-black text-2xl" aria-hidden="true"></i>
@@ -114,7 +128,7 @@ export default function LoginForm()
                                 
                             </div>
 
-                            <div className="mx-auto mt-7 flex w-3/4">
+                            <div className="mx-auto mt-7 flex w-11/12 sm:w-3/4 gap-2.5">
                                 <input
                                     id="remember"
                                     name="remember"
@@ -130,11 +144,22 @@ export default function LoginForm()
                         
                             </div>
 
+                            <p
+                                role="alert"
+                                aria-live="polite"
+                                className={`mx-auto min-h-5 w-3/4 text-sm font-bold text-rose-300 transition-opacity ${
+                                    message ? "opacity-100" : "opacity-0"
+                                }`}
+                            >
+                                {message || " "}
+                            </p>
 
+                            
+                            
                             <div className="mx-auto flex w-3/4 justify-end">
                                 <button
                                     type="submit"
-                                    className="mt-15 w-3/5 rounded-xl bg-button px-4 py-2 hover:bg-button-hover border border-white/20 font-bold">
+                                    className="mt-10 w-3/5 rounded-xl bg-button px-4 py-2 hover:bg-button-hover border border-white/20 font-bold">
                                         Log in
                                 </button>
                             </div>
@@ -144,14 +169,14 @@ export default function LoginForm()
 
                         
 
-                        {message && <p className="mx-auto w-3/4 text-sm font-bold text-gray-200">{message}</p>}
+                        
 
 
                         
 
                     </div>
 
-                    <div className="mt-4 -mr-10 w-3/4 flex flex-col font-bold text-gray-300">
+                    <div className="mt-4 sm:-mr-10 w-3/4 flex flex-col items-center sm:items-start text-center sm:text-left font-bold text-gray-300">
                     <a href="/forgot-password">
                         I don't remember password
                     </a>
@@ -167,6 +192,16 @@ export default function LoginForm()
 
 
                 </div>
+            </div>
+
+            <div className="relative hidden flex-1 self-stretch p-6 lg:block lg:w-1/2">
+
+
+                <img
+                        src={treeImg}
+                        alt=""
+                        className="pointer-events-none absolute bottom-0 left-1/2 max-h-[65%] max-w-full -translate-x-1/2 object-contain object-bottom"
+                />
             </div>
 
             
